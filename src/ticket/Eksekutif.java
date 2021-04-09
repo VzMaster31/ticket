@@ -9,20 +9,21 @@ package ticket;
  *
  * @author 4d3h3
  */
-public class Executive implements Ticket {
+public class Eksekutif implements Tiket {
     
-    String name = "";
-    int price = 110000;
+    String nama = "";
+    int price = 300000;
+    int seat = 10;
     
-    Executive(String name) {
-        this.name = name;
+    Eksekutif(String nama) {
+        this.nama = nama;
     }
     
-    public String getName() {
-        return this.name;
+    public String ambilNama() {
+        return this.nama;
     }
 
-    public int getPrice() {
+    public int ambilHarga() {
         return this.price;
     }
     

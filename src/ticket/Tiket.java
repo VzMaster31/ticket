@@ -15,20 +15,26 @@ package ticket;
  *
  * @author 4d3h3
  */
-public interface Ticket {
+public interface Tiket {
     
     /**
      * Ambil nama tiket tersebut
      *
      * @return String
      */
-    String getName();
+    String ambilNama();
     
     /**
      * Ambil harga tiket tersebut
      *
      * @return int
      */
-    int getPrice();
+    int ambilHarga();
+    
+     /**
+     * Ambil Banyak kursi tersebut
+     *
+     * @return int
+     */
     
 }

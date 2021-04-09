@@ -13,18 +13,29 @@ import java.util.Scanner;
  */
 public class Main {
     
+    public static void ticketList(Tiket[] tickets) {
+        System.out.println("=========================================");
+        System.out.println("= Tiket Kereta jurusan Surabaya Jakarta =");
+        
+        for (int i = 0; i < tickets.length; i++) {
+            System.out.println((i + 1) + ". " + tickets[i].ambilNama() + " : " + tickets[i].ambilHarga());
+        }
+        
+        System.out.println("=========================================");
+    }
+    
     public static void main(String[] args) {
         /**
          * Membuat array / list untuk tiket-tiket yang ada di aplikasi
          * Tipe data menggunakan interface Ticket
          * 
-         * new Economy/Business/Executive adalah deklarasi objek dengan class
+         * new Ekonomi/Bisnis/Eksekutif adalah deklarasi objek dengan class
          * tersebut (Economy/Business/Executive)
          */
-        Ticket[] tickets = {
-            new Economy("Ekonomi"),
-            new Business("Bisnis"),
-            new Executive("Eksekutif")
+        Tiket[] tickets = {
+            new Ekonomi("Ekonomi"),
+            new Bisnis("Bisnis"),
+            new Eksekutif("Eksekutif")
         };
         
         /**
@@ -33,7 +44,7 @@ public class Main {
         start(tickets);
     }
     
-    public static void start(Ticket[] tickets) {
+    public static void start(Tiket[] tickets) {
         /**
          * Deklarasi variabel boolean stop agar sistem tahu kapan untuk berhenti
          * apabila variabel berhenti bernilai true maka aplikasi berhenti
@@ -41,6 +52,17 @@ public class Main {
          */
         boolean berhenti = false;
         
+        /**
+             * Deklarasi variabel scanner untuk input data transaksinya
+             * variabel ticketIndex berisi index tiket yang diisi
+             * variabel quantity berisi jumlah penumpang / jumlah tiket yang
+             * dibeli
+             * variabel price berisi nilai harga tiket tersebut
+             */
+        Scanner input = new Scanner(System.in);
+        int ticketIndex, jumlah = 0, harga, kursi = 80;
+        String again;
+            
         /**
          * Perulangan aplikasi akan dijalankani selama user menginginkan untuk
          * membuat transaksi lainnya
@@ -53,30 +75,25 @@ public class Main {
              */
             ticketList(tickets);
 
-            /**
-             * Deklarasi variabel scanner untuk input data transaksinya
-             * variabel ticketIndex berisi index tiket yang diisi
-             * variabel quantity berisi jumlah penumpang / jumlah tiket yang
-             * dibeli
-             * variabel price berisi nilai harga tiket tersebut
-             */
-            Scanner input = new Scanner(System.in);
-            int ticketIndex, jumlah = 0, harga;
-            String again;
-
+            if (kursi < 1 ) {
+                System.out.println("Maaf Belum Ada Kursi Tersedia");
+                System.out.println("Silahkan Coba di Lain Waktu");
+                break;
+            }
             /**
              * Print pertanyaan input data
              */
-            System.out.println("Masukkan Pesanan Anda");
-            System.out.print("Kelas = ");
+            System.out.println("Kursi Yang Tersedia : " + kursi);
+            System.out.println("Masukkan Pilihan Anda");
+            System.out.print("Masukkan Kelas = ");
                 
                 /**
                  * Membuat validasi agar memastikan bahwa input yang dimasukkan
                  * berupa angka
                  */
                 while (!input.hasNextInt()) {
-                    System.out.println("Masukkan nomor kelas berupa angka!");
-                    System.out.print("Kelas = ");
+                    System.out.println("Untuk Pilihan Kelas Harus Berupa Angka");
+                    System.out.print("Masukkan Kelas = ");
                    
                     input.next();
                 }
@@ -90,39 +107,52 @@ public class Main {
             if (ticketIndex <= 0 || ticketIndex > tickets.length) {
                 System.out.println("=================");
                 
-                System.out.println("Tolong masukkan nomor tiket sesuai list!");
+                System.out.println("!Tolong masukkan nomor tiket sesuai list!");
                 
-                continue;
+               continue;
             }
+            
+            
             
             /**
              * Membuat Validasi apabila jumlah penumpang tidak memenuhi kriteria
              */
+            
             while(jumlah <= 0) {
-                System.out.print("Jumlah Penumpang = ");
-                
+                System.out.print("Jumlah Penumpang = ");     
                 /**
                  * Membuat validasi agar memastikan bahwa input yang dimasukkan
                  * berupa angka
                  */
                 while (!input.hasNextInt()) {
-                    System.out.println("Masukkan jumlah penumpang berupa angka!");
+                    System.out.println("!Memasukkan jumlah penumpang Harus Berupa Angka!");
                     System.out.print("Jumlah Penumpang = ");
                    
                     input.next();
                 }
                 
                 jumlah = input.nextInt();
+                if (jumlah > kursi) {
+                    System.out.println("Maaf Kursi yang anda pesan tidak cukup");
+                    jumlah = 0;
+                }
             }
+            
 
-            int total = tickets[ticketIndex - 1].getPrice() * jumlah;
-
+            int total = tickets[ticketIndex - 1].ambilHarga() * jumlah;
+            kursi = kursi - jumlah;
+            
             /**
              * Output / print total yang harus dibayar oleh pembeli
              */
-            System.out.println("Total Bayar = " + total);
+            System.out.println("Anda Memilih Kelas : " + tickets[ticketIndex - 1].ambilNama());
+            System.out.println("Dengan jumlah penumpang : " + jumlah );
+            System.out.println("Maka Total Yang Harus Dibayar: " + total);
             
-            System.out.println("=================");
+            System.out.println("=========================================");
+            
+            jumlah = 0;
+            
             
             /**
              * Deklarasi variabel boolean stopAsk agar sistem tahu kapan untuk berhenti
@@ -131,9 +161,9 @@ public class Main {
              * Bila diisi "n" aplikasi akan berhenti
              * Bila diisi selain "y" / "n" aplikasi akan lanjut menanyakan lanjut atau tidak
              */
-            boolean stopAsk = false;
+            boolean ulang = false;
             
-            while (!stopAsk) {
+            while (!ulang) {
                 System.out.println("Pesan Tiket Lagi? (Y/N) ");
 
                 again = input.next();
@@ -142,24 +172,18 @@ public class Main {
                     continue;
                 }
                 
-                stopAsk = true;
+                ulang = true;
                 
                 if (again.toLowerCase().equals("n")) {
+                    System.out.println("");
+                    System.out.println("Terima Kasih Telah Memesan tiket disini");
+                    System.out.println("Semoga Perjalanan Anda Menyenangkan");
                     berhenti = true;
                 }
             }
         }
     }
     
-    public static void ticketList(Ticket[] tickets) {
-        System.out.println("=================");
-        System.out.println("List Tiket Kereta");
-        
-        for (int i = 0; i < tickets.length; i++) {
-            System.out.println((i + 1) + ". " + tickets[i].getName() + " : " + tickets[i].getPrice());
-        }
-        
-        System.out.println("=================");
-    }
+    
     
 }

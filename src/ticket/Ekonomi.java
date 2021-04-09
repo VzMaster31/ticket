@@ -9,21 +9,23 @@ package ticket;
  *
  * @author 4d3h3
  */
-public class Economy implements Ticket {
+public class Ekonomi implements Tiket {
     
-    String name = "";
-    int price = 15000;
+    String nama = "";
+    int harga = 75000;
     
-    Economy(String name) {
-        this.name = name;
+    Ekonomi(String nama) {
+        this.nama = nama;
     }
     
-    public String getName() {
-        return this.name;
+    public String ambilNama() {
+        return this.nama;
     }
 
-    public int getPrice() {
-        return this.price;
+    public int ambilHarga() {
+        return this.harga;
     }
+    
+    
     
 }
